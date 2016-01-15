@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.accp.crm.pojo.SalePlan" table="SalePlan" schema="CRM">
+        <id name="planId" type="java.lang.Integer">
+            <column name="PLANID"/>
+            <generator class="increment" />
+        </id>
+        <property name="chanceId" type="java.lang.Integer">
+            <column name="CHANCEID" />
+        </property>
+        <property name="time" type="java.util.Date">
+            <column name="TIME" />
+        </property>
+        <property name="planContent" type="java.lang.String">
+            <column name="PLANCONTENT" length="200" />
+        </property>
+        <property name="result" type="java.lang.String">
+            <column name="RESULT" length="100" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="STATUS" length="20" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

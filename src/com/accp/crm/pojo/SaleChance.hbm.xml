@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.accp.crm.pojo.SaleChance" table="SaleChance" schema="CRM">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID"/>
+            <generator class="increment" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" length="50" />
+        </property>
+        <property name="resume" type="java.lang.String">
+            <column name="RESUME" length="100" />
+        </property>
+        <property name="linkMan" type="java.lang.String">
+            <column name="LINKMAN" length="30" />
+        </property>
+        <property name="tel" type="java.lang.String">
+            <column name="TEL" length="30" />
+        </property>
+        <property name="createMan" type="java.lang.String">
+            <column name="CREATEMAN" length="30" />
+        </property>
+        <property name="assignMan" type="java.lang.String">
+            <column name="ASSIGNMAN" length="30" />
+        </property>
+        <property name="assignTime" type="java.util.Date">
+            <column name="ASSIGNTIME"/>
+        </property>
+        <property name="chanceFrom" type="java.lang.String">
+            <column name="CHANCEFROM" length="30" />
+        </property>
+        <property name="chanceDesc" type="java.lang.String">
+            <column name="CHANCEDESC" length="50" />
+        </property>
+        <property name="probability" type="java.lang.Integer">
+            <column name="PROBABILITY" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="STATUS" />
+        </property>
+        <property name="createTime" type="java.util.Date">
+            <column name="CREATETIME"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

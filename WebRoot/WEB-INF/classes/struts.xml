@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.devMode" value="true"></constant>
+	<constant name="struts.ui.theme" value="simple" />
+	<package name="default" namespace="/" extends="struts-default">
+		<interceptors>
+			<interceptor name="roleinter" class="roleInterceptor">
+			</interceptor>
+			<interceptor-stack name="mystack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="roleinter"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mystack"></default-interceptor-ref>
+		<global-results>
+			<result name="rolewrong">/rolewrong.jsp</result>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!-- class应该写applicationContext.xml中 action 的 ID -->
+		<action name="sale*" class="SaleChanceAction" method="{1}">
+			<result name="searchFirstPage">/sale/list.jsp</result>
+			<result name="searchNextPage">/sale/list.jsp</result>
+			<result name="selectById">/sale/edit.jsp</result>
+			<result name="appointById">/sale/dispatch.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+		<action name="plan*" class="SalePlanAction" method="{1}">
+			<result name="firstPage">/sale/dev.jsp</result>
+			<result name="nextPage">/sale/dev.jsp</result>
+			<result name="toAdd">/sale/dev_plan.jsp</result>
+			<result name="toDoPlan">/sale/dev_execute.jsp</result>
+			<result name="toDetail">/sale/dev_detail.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="user*" class="UsersAction" method="{1}">
+			<result name="login">/index.jsp</result>
+			<result name="relogin">/login.jsp</result>
+			<result name="logout">/login.jsp</result>
+			<result name="selectFirstPage">/users/list.jsp</result>
+			<result name="selectNextPage">/users/list.jsp</result>
+			<result name="toAdd">/users/add.jsp</result>
+			<result name="add" type="redirectAction">userselectFirstPage</result>
+			<result name="toEdit">/users/edit.jsp</result>
+			<result name="update" type="redirectAction">userselectFirstPage</result>
+			<result name="toPwd">/users/editPwd.jsp</result>
+			<result name="ModifyPwd" type="redirectAction">userselectFirstPage</result>
+			<result name="delete" type="redirectAction">userselectFirstPage</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="role*" class="RoleAction" method="{1}">
+			<result name="firstPage">/power/role.jsp</result>
+			<result name="nextPage">/power/role.jsp</result>
+			<result name="toAdd">/power/add.jsp</result>
+			<result name="add" type="redirectAction">rolefirstPage</result>
+			<result name="toEdit">/power/edit.jsp</result>
+			<result name="update" type="redirectAction">rolefirstPage</result>
+			<result name="delete" type="redirectAction">rolefirstPage</result>
+			<result name="error">/error.jsp</result>
+		</action>
+		<action name="product*" class="ProductAction" method="{1}">
+			<result name="firstPage">/basd/product.jsp</result>
+			<result name="nextPage">/basd/product.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="storage*" class="StorageAction" method="{1}">
+			<result name="firstPage">/basd/storage.jsp</result>
+			<result name="nextPage">/basd/storage.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="dictionary*" class="DictionaryAction" method="{1}">
+			<result name="firstPage">/basd/dict.jsp</result>
+			<result name="nextPage">/basd/dict.jsp</result>
+			<result name="toAdd">/basd/dict_add.jsp</result>
+			<result name="add" type="redirectAction">dictionaryfirstPage</result>
+			<result name="toedit">/basd/dict_edit.jsp</result>
+			<result name="update" type="redirectAction">dictionaryfirstPage</result>
+			<result name="delete" type="redirectAction">dictionaryfirstPage</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="cust*" class="CustInfoAction" method="{1}">
+			<result name="firstPage">/cust/cust/list.jsp</result>
+			<result name="nextPage">/cust/cust/list.jsp</result>
+			<result name="toEdit">/cust/cust/edit.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="linkman*" class="LinkmanAction" method="{1}">
+			<result name="selectAll">/cust/cust/linkman.jsp</result>
+			<result name="toAdd">/cust/cust/linkman_add.jsp</result>
+			<result name="toUpdate">/cust/cust/linkman_edit.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="activity*" class="ActivityAction" method="{1}">
+			<result name="selectAll">/cust/cust/activities.jsp</result>
+			<result name="toAdd">/cust/cust/activities_add.jsp</result>
+			<result name="toUpdate">/cust/cust/activities_edit.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="orders*" class="OrdersAction" method="{1}">
+			<result name="firstPage">/cust/cust/orders.jsp</result>
+			<result name="nextPage">/cust/cust/orders.jsp</result>
+			<result name="detail">/cust/cust/orders_detail.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="lost*" class="LostAction" method="{1}">
+			<result name="firstPage">/cust/lost/list.jsp</result>
+			<result name="nextPage">/cust/lost/list.jsp</result>
+			<result name="toConfirm">/cust/lost/confirm.jsp</result>
+			<result name="toDelay">/cust/lost/delay.jsp</result>
+			<result name="toDetail">/cust/lost/detail.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="service*" class="ServiceAction" method="{1}">
+			<result name="add" type="redirect">/cust/service/add.jsp</result>
+			<result name="firstPage">/cust/service/deal.jsp</result>
+			<result name="nextPage">/cust/service/deal.jsp</result>
+			<result name="toDeal">/cust/service/deal_do.jsp</result>
+			<result name="toBack">/cust/service/back_do.jsp</result>
+			<result name="toDetail">/cust/service/detail.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+		<action name="rept*" class="ReptAction" method="{1}">
+			<result name="custTotal">/rept/contr.jsp</result>
+			<result name="custType">/rept/cons.jsp</result>
+			<result name="servType">/rept/serv.jsp</result>
+			<result name="firstPage">/rept/lost.jsp</result>
+			<result name="nextPage">/rept/lost.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+
+	</package>
+</struts>    

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver">
+		</property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:ssm">
+		</property>
+		<property name="username" value="crm"></property>
+		<property name="password" value="crm"></property>
+	</bean>
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle9Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/accp/crm/pojo/SaleChance.hbm.xml</value>
+				<value>com/accp/crm/pojo/SalePlan.hbm.xml</value>
+				<value>com/accp/crm/pojo/Users.hbm.xml</value>
+				<value>com/accp/crm/pojo/Role.hbm.xml</value>
+				<value>com/accp/crm/pojo/Product.hbm.xml</value>
+				<value>com/accp/crm/pojo/Storage.hbm.xml</value>
+				<value>com/accp/crm/pojo/Dictionary.hbm.xml</value>
+				<value>com/accp/crm/pojo/CustInfo.hbm.xml</value>
+				<value>com/accp/crm/pojo/Linkman.hbm.xml</value>
+				<value>com/accp/crm/pojo/Activity.hbm.xml</value>
+				<value>com/accp/crm/pojo/Orders.hbm.xml</value>
+				<value>com/accp/crm/pojo/Orderdetail.hbm.xml</value>
+				<value>com/accp/crm/pojo/Custlost.hbm.xml</value>
+				<value>com/accp/crm/pojo/Service.hbm.xml</value>
+				<value>com/accp/crm/pojo/Power.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 1.配置事务管理 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 2.配置事务的属性及传播特性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="select*" propagation="REQUIRED" />
+			<tx:method name="find*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 3.定义哪些方法(AOP切入点)会使用事务 -->
+	<aop:config>
+		<aop:pointcut id="productServiceMethods" expression="execution(* com.accp.crm.dao.impl.*.*(..))" /><!--包 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethods" />
+	</aop:config>
+
+	<!-- SaleChanceDao -->
+	<bean id="SaleChanceDaoImpl" class="com.accp.crm.dao.impl.SaleChanceDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="SaleChanceBizImpl" class="com.accp.crm.biz.impl.SaleChanceBizImpl">
+		<property name="saleChanceDao" ref="SaleChanceDaoImpl" />
+	</bean>
+	<bean id="SaleChanceAction" class="com.accp.crm.action.SaleChanceAction" scope="prototype">
+		<property name="saleChanceBiz" ref="SaleChanceBizImpl" />
+		<property name="usersBiz" ref="UsersBizImpl" />
+	</bean>
+
+	<!-- SalePlan -->
+	<bean id="SalePlanDaoImpl" class="com.accp.crm.dao.impl.SalePlanDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="SalePlanBizImpl" class="com.accp.crm.biz.impl.SalePlanBizImpl">
+		<property name="salePlanDao" ref="SalePlanDaoImpl" />
+	</bean>
+	<bean id="SalePlanAction" class="com.accp.crm.action.SalePlanAction" scope="prototype">
+		<property name="salePlanBiz" ref="SalePlanBizImpl" />
+		<property name="saleChanceBiz" ref="SaleChanceBizImpl" />
+		<property name="custInfoBiz" ref="CustInfoBizImpl" />
+		<property name="linkmanBiz" ref="LinkmanBizImpl" />
+	</bean>
+
+	<!-- Users -->
+	<bean id="UsersDaoImpl" class="com.accp.crm.dao.impl.UsersDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="UsersBizImpl" class="com.accp.crm.biz.impl.UsersBizImpl">
+		<property name="usersDao" ref="UsersDaoImpl" />
+	</bean>
+	<bean id="UsersAction" class="com.accp.crm.action.UsersAction" scope="prototype">
+		<property name="usersBiz" ref="UsersBizImpl" />
+		<property name="roleBiz" ref="RoleBizImpl" />
+	</bean>
+
+	<!-- Product -->
+	<bean id="ProductDaoImpl" class="com.accp.crm.dao.impl.ProductDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ProductBizImpl" class="com.accp.crm.biz.impl.ProductBizImpl">
+		<property name="productDao" ref="ProductDaoImpl" />
+	</bean>
+	<bean id="ProductAction" class="com.accp.crm.action.ProductAction" scope="prototype">
+		<property name="productBiz" ref="ProductBizImpl" />
+	</bean>
+
+	<!-- Storage -->
+	<bean id="StorageDaoImpl" class="com.accp.crm.dao.impl.StorageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="StorageBizImpl" class="com.accp.crm.biz.impl.StorageBizImpl">
+		<property name="storageDao" ref="StorageDaoImpl" />
+	</bean>
+	<bean id="StorageAction" class="com.accp.crm.action.StorageAction" scope="prototype">
+		<property name="storageBiz" ref="StorageBizImpl" />
+	</bean>
+
+	<!-- Dictionary -->
+	<bean id="DictionaryDaoImpl" class="com.accp.crm.dao.impl.DictionaryDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="DictionaryBizImpl" class="com.accp.crm.biz.impl.DictionaryBizImpl">
+		<property name="dictionaryDao" ref="DictionaryDaoImpl" />
+	</bean>
+	<bean id="DictionaryAction" class="com.accp.crm.action.DictionaryAction" scope="prototype">
+		<property name="dictionaryBiz" ref="DictionaryBizImpl" />
+	</bean>
+
+	<!-- CustInfo -->
+	<bean id="CustInfoDaoImpl" class="com.accp.crm.dao.impl.CustInfoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="CustInfoBizImpl" class="com.accp.crm.biz.impl.CustInfoBizImpl">
+		<property name="custInfoDao" ref="CustInfoDaoImpl" />
+	</bean>
+	<bean id="CustInfoAction" class="com.accp.crm.action.CustInfoAction" scope="prototype">
+		<property name="custInfoBiz" ref="CustInfoBizImpl" />
+		<property name="dictionaryBiz" ref="DictionaryBizImpl" />
+	</bean>
+
+	<!-- Linkman -->
+	<bean id="LinkmanDaoImpl" class="com.accp.crm.dao.impl.LinkmanDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="LinkmanBizImpl" class="com.accp.crm.biz.impl.LinkmanBizImpl">
+		<property name="linkmanDao" ref="LinkmanDaoImpl" />
+	</bean>
+	<bean id="LinkmanAction" class="com.accp.crm.action.LinkmanAction" scope="prototype">
+		<property name="linkmanBiz" ref="LinkmanBizImpl" />
+		<property name="custInfoBiz" ref="CustInfoBizImpl" />
+	</bean>
+
+	<!-- Activity -->
+	<bean id="ActivityDaoImpl" class="com.accp.crm.dao.impl.ActivityDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ActivityBizImpl" class="com.accp.crm.biz.impl.ActivityBizImpl">
+		<property name="activityDao" ref="ActivityDaoImpl" />
+	</bean>
+	<bean id="ActivityAction" class="com.accp.crm.action.ActivityAction" scope="prototype">
+		<property name="activityBiz" ref="ActivityBizImpl" />
+		<property name="custInfoBiz" ref="CustInfoBizImpl" />
+	</bean>
+
+	<!-- Orders -->
+	<bean id="OrdersDaoImpl" class="com.accp.crm.dao.impl.OrdersDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="OrdersBizImpl" class="com.accp.crm.biz.impl.OrdersBizImpl">
+		<property name="ordersDao" ref="OrdersDaoImpl" />
+	</bean>
+	<bean id="OrdersAction" class="com.accp.crm.action.OrdersAction" scope="prototype">
+		<property name="ordersBiz" ref="OrdersBizImpl" />
+		<property name="custInfoBiz" ref="CustInfoBizImpl" />
+		<property name="orderdetailBiz" ref="OrderdetailBizImpl" />
+		<property name="productBiz" ref="ProductBizImpl" />
+	</bean>
+
+	<!-- Orderdetail -->
+	<bean id="OrderdetailDaoImpl" class="com.accp.crm.dao.impl.OrderdetailDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="OrderdetailBizImpl" class="com.accp.crm.biz.impl.OrderdetailBizImpl">
+		<property name="orderdetailDao" ref="OrderdetailDaoImpl" />
+	</bean>
+
+	<!-- Custlost -->
+	<bean id="LostDaoImpl" class="com.accp.crm.dao.impl.LostDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="LostBizImpl" class="com.accp.crm.biz.impl.LostBizImpl">
+		<property name="lostDao" ref="LostDaoImpl" />
+	</bean>
+	<bean id="LostAction" class="com.accp.crm.action.LostAction" scope="prototype">
+		<property name="lostBiz" ref="LostBizImpl" />
+	</bean>
+
+	<!-- Service -->
+	<bean id="ServiceDaoImpl" class="com.accp.crm.dao.impl.ServiceDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ServiceBizImpl" class="com.accp.crm.biz.impl.ServiceBizImpl">
+		<property name="serviceDao" ref="ServiceDaoImpl" />
+	</bean>
+	<bean id="ServiceAction" class="com.accp.crm.action.ServiceAction" scope="prototype">
+		<property name="serviceBiz" ref="ServiceBizImpl" />
+		<property name="usersBiz" ref="UsersBizImpl" />
+	</bean>
+
+	<!-- Rept统计 -->
+	<bean id="ReptAction" class="com.accp.crm.action.ReptAction" scope="prototype">
+		<property name="custInfoBiz" ref="CustInfoBizImpl" />
+		<property name="serviceBiz" ref="ServiceBizImpl" />
+		<property name="lostBiz" ref="LostBizImpl" />
+		<property name="ordersBiz" ref="OrdersBizImpl" />
+	</bean>
+	<!-- 权限拦截 -->
+	<bean id="roleInterceptor" class="com.accp.crm.action.RoleInterceptor">
+		<!-- <property name="roleBiz" ref="RoleBizImpl" /> -->
+	</bean>
+
+	<!-- Role 角色 -->
+	<bean id="RoleDaoImpl" class="com.accp.crm.dao.impl.RoleDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="PowerDaoImpl" class="com.accp.crm.dao.impl.PowerDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="RoleBizImpl" class="com.accp.crm.biz.impl.RoleBizImpl">
+		<property name="roleDao" ref="RoleDaoImpl" />
+		<property name="powerDao" ref="PowerDaoImpl" />
+	</bean>
+	<bean id="RoleAction" class="com.accp.crm.action.RoleAction" scope="prototype">
+		<property name="roleBiz" ref="RoleBizImpl" />
+	</bean>
+
+</beans>

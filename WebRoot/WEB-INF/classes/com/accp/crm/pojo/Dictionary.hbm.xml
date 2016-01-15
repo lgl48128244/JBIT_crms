@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.accp.crm.pojo.Dictionary" table="Dictionary" schema="CRM">
+        <id name="dict_id" type="java.lang.Integer">
+            <column name="dict_id"/>
+            <generator class="assigned" />
+        </id>
+        <property name="dict_type" type="java.lang.String">
+            <column name="dict_type" length="50" />
+        </property>
+        <property name="dict_item" type="java.lang.String">
+            <column name="dict_item" length="50" />
+        </property>
+        <property name="dict_value" type="java.lang.String">
+            <column name="dict_value" length="50" />
+        </property>
+        <property name="dict_isEdit" type="java.lang.Integer">
+            <column name="dict_isEdit" />
+        </property>
+    </class>
+</hibernate-mapping>

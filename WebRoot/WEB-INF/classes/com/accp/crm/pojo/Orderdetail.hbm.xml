@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.accp.crm.pojo.Orderdetail" table="ORDERDETAIL" schema="CRM">
+        <id name="did" type="java.lang.Integer">
+            <column name="DID" precision="22" scale="0" />
+            <generator class="increment" />
+        </id>
+        <property name="orderid" type="java.lang.Integer">
+            <column name="ORDERID" precision="22" scale="0" />
+        </property>
+        <property name="prodid" type="java.lang.Integer">
+            <column name="PRODID" precision="22" scale="0" />
+        </property>
+        <property name="count" type="java.lang.Integer">
+            <column name="COUNT" precision="22" scale="0" />
+        </property>
+        <property name="unit" type="java.lang.String">
+            <column name="UNIT" length="10" />
+        </property>
+        <property name="total" type="java.lang.Integer">
+            <column name="TOTAL" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

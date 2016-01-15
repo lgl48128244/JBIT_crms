@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.accp.crm.pojo.Custlost" table="CUSTLOST" schema="CRM">
+        <id name="lostid" type="java.lang.Integer">
+            <column name="LOSTID" precision="22" scale="0" />
+            <generator class="increment" />
+        </id>
+        <property name="lostno" type="java.lang.String">
+            <column name="LOSTNO" length="50" />
+        </property>
+        <property name="lostname" type="java.lang.String">
+            <column name="LOSTNAME" length="100" />
+        </property>
+        <property name="lostmanager" type="java.lang.String">
+            <column name="LOSTMANAGER" length="50" />
+        </property>
+        <property name="lastorderdate" type="java.util.Date">
+            <column name="LASTORDERDATE" length="7" />
+        </property>
+        <property name="lostdate" type="java.util.Date">
+            <column name="LOSTDATE" length="7" />
+        </property>
+        <property name="delay" type="java.lang.String">
+            <column name="DELAY" length="1000" />
+        </property>
+        <property name="reason" type="java.lang.String">
+            <column name="REASON" length="1000" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="STATUS" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

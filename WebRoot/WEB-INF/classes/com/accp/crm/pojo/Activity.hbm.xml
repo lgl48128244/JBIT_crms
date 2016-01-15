@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.accp.crm.pojo.Activity" table="ACTIVITY" schema="CRM">
+        <id name="aid" type="java.lang.Integer">
+            <column name="AID" precision="22" scale="0" />
+            <generator class="increment" />
+        </id>
+        <property name="custno" type="java.lang.String">
+            <column name="CUSTNO" length="100" />
+        </property>
+        <property name="custname" type="java.lang.String">
+            <column name="CUSTNAME" length="200" />
+        </property>
+        <property name="actdate" type="java.util.Date">
+            <column name="ACTDATE" length="7" />
+        </property>
+        <property name="place" type="java.lang.String">
+            <column name="PLACE" length="200" />
+        </property>
+        <property name="title" type="java.lang.String">
+            <column name="TITLE" length="500" />
+        </property>
+        <property name="actdesc" type="java.lang.String">
+            <column name="ACTDESC" length="500" />
+        </property>
+        <property name="remark" type="java.lang.String">
+            <column name="REMARK" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>
